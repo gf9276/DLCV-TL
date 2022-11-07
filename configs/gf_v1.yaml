@@ -1,0 +1,21 @@
+arch:
+  epochs: 50  # 搞着玩玩
+
+model:
+  checkpoint_path: 'output/'
+  scheduler:
+    decay: 0.9 # 我就是降着玩的
+  optimizer:
+    learning_rate: 0.02
+  params:
+    type: 'ResNeXt29_2x64d'
+
+datasets:
+  train:
+    batch_size: 128
+    num_workers: 16
+    path: '../TL_Dataset/'
+  test:
+    path: '../TL_Dataset/'
+
+
