@@ -12,7 +12,7 @@
 2. cd 到该项目文件夹下，执行命令
 
 ```
-python train.py --file=configs/gf_v1/yaml
+python train.py --file=configs/gf_v1.yaml
 ```
 
 开始执行训练，最终得到的best_model输出保存在output里
