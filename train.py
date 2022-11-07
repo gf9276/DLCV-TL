@@ -130,7 +130,11 @@ def main(args):
         # train for one epoch (only log if eval to have aligned steps...)
         train(config, train_loader, model, optimizer, criterion, epoch)
         evaluation(config, train_dataset, model, criterion, epoch)
-        scheduler.step()  # 学习率衰减，加着玩玩呗
+        for param_group in optimizer.param_groups:
+            if param_group['lr'] > model.optimizer.min_lr:
+                scheduler.step()  # 学习率衰减，加着玩玩呗
+            else:
+                param_group['lr'] = model.optimizer.min_lr
 
     printcolor('Training complete, models saved in {}'.format(config.model.checkpoint_path), "green")
 

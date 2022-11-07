@@ -4,11 +4,12 @@ arch:
 model:
   checkpoint_path: 'output/'
   scheduler:
-    decay: 0.9 # 我就是降着玩的
+    decay: 0.85 # 我就是降着玩的
   optimizer:
-    learning_rate: 0.02
+    learning_rate: 0.1
+    min_lr: 0.001
   params:
-    type: 'DLA'
+    type: 'DenseNet121'
 
 datasets:
   train:

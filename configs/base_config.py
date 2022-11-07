@@ -30,6 +30,7 @@ cfg.model.scheduler.lr_epoch_divide_frequency = 5  # 学习率更改的频率
 cfg.model.optimizer = CN()
 cfg.model.optimizer.learning_rate = 0.001
 cfg.model.optimizer.weight_decay = 0.0
+cfg.model.optimizer.min_lr = 0.0
 ########################################################################################################################
 ### MODEL.PARAMS  这里没什么参数
 ########################################################################################################################
