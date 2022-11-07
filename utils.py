@@ -64,5 +64,7 @@ def get_model(model_type: str):
         model = RegNetX_200MF()
     elif model_type == 'SimpleDLA':
         model = SimpleDLA()
+    elif model_type == 'DLA':
+        model = DLA()
 
     return model

@@ -8,7 +8,7 @@ model:
   optimizer:
     learning_rate: 0.02
   params:
-    type: 'ResNeXt29_2x64d'
+    type: 'DLA'
 
 datasets:
   train:
