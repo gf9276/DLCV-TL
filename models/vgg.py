@@ -2,7 +2,6 @@
 import torch
 import torch.nn as nn
 
-
 cfg = {
     'VGG11': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
     'VGG13': [64, 64, 'M', 128, 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
@@ -20,6 +19,7 @@ class VGG(nn.Module):
     def forward(self, x):
         out = self.features(x)
         out = out.view(out.size(0), -1)
+        out = F.adaptive_avg_pool2d(out, (1, 1))  # 改成自适应，这一行是后期添加的
         out = self.classifier(out)
         return out
 
@@ -40,7 +40,7 @@ class VGG(nn.Module):
 
 def test():
     net = VGG('VGG11')
-    x = torch.randn(2,3,32,32)
+    x = torch.randn(2, 3, 32, 32)
     y = net(x)
     print(y.size())
 

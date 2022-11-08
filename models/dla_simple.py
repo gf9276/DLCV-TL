@@ -26,11 +26,11 @@ class BasicBlock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
-        if stride != 1 or in_planes != self.expansion*planes:
+        if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, self.expansion*planes,
+                nn.Conv2d(in_planes, self.expansion * planes,
                           kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(self.expansion*planes)
+                nn.BatchNorm2d(self.expansion * planes)
             )
 
     def forward(self, x):
@@ -58,15 +58,15 @@ class Root(nn.Module):
 class Tree(nn.Module):
     def __init__(self, block, in_channels, out_channels, level=1, stride=1):
         super(Tree, self).__init__()
-        self.root = Root(2*out_channels, out_channels)
+        self.root = Root(2 * out_channels, out_channels)
         if level == 1:
             self.left_tree = block(in_channels, out_channels, stride=stride)
             self.right_tree = block(out_channels, out_channels, stride=1)
         else:
             self.left_tree = Tree(block, in_channels,
-                                  out_channels, level=level-1, stride=stride)
+                                  out_channels, level=level - 1, stride=stride)
             self.right_tree = Tree(block, out_channels,
-                                   out_channels, level=level-1, stride=1)
+                                   out_channels, level=level - 1, stride=1)
 
     def forward(self, x):
         out1 = self.left_tree(x)
@@ -96,8 +96,8 @@ class SimpleDLA(nn.Module):
             nn.ReLU(True)
         )
 
-        self.layer3 = Tree(block,  32,  64, level=1, stride=1)
-        self.layer4 = Tree(block,  64, 128, level=2, stride=2)
+        self.layer3 = Tree(block, 32, 64, level=1, stride=1)
+        self.layer4 = Tree(block, 64, 128, level=2, stride=2)
         self.layer5 = Tree(block, 128, 256, level=2, stride=2)
         self.layer6 = Tree(block, 256, 512, level=1, stride=2)
         self.linear = nn.Linear(512, num_classes)
@@ -110,7 +110,8 @@ class SimpleDLA(nn.Module):
         out = self.layer4(out)
         out = self.layer5(out)
         out = self.layer6(out)
-        out = F.avg_pool2d(out, 4)
+        # out = F.avg_pool2d(out, 4)
+        out = F.adaptive_avg_pool2d(out, (1, 1))  # 改成自适应
         out = out.view(out.size(0), -1)
         out = self.linear(out)
         return out

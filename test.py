@@ -65,8 +65,9 @@ def main(model_file):
     # evaluation(config, train_dataset, model, criterion, config.arch.start_epochs)
 
     # 载入数据，一个个来也没什么问题。。。
-    batch_size = 200  # 20000的整数，不然除不尽可能会有问题的。。。
-    test_dataset = TestSetLoader(config.datasets.test.path)
+    batch_size = 50  # 20000的整数，不然除不尽可能会有问题的。。。
+    test_dataset = TestSetLoader(config.datasets.test.path, shape=config.datasets.augmentation.image_shape,
+                                 is_pad=config.datasets.test.is_pad)
     test_loader = DataLoader(test_dataset,
                              batch_size=batch_size,
                              pin_memory=False,

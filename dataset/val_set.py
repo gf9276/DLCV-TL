@@ -1,6 +1,6 @@
 """
 没有测试集，我只能从训练集里搞点出来当作验证集
-所以这个是基于训练集的
+所以这个是基于训练集的，完完全全基于训练集的
 """
 
 from pathlib import Path  # 我觉得这个更好用，呵呵呵
@@ -8,7 +8,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 import random
 import torch
-from dataset.data_utils import read_rgb_file, to_tensor_sample
+from dataset.data_utils import *
 from dataset.train_set import TrainSetLoader
 
 
@@ -22,9 +22,10 @@ class ValSetLoader(Dataset):
         Path to the dataset
     """
 
-    def __init__(self, train_dataset: TrainSetLoader):
+    def __init__(self, train_dataset: TrainSetLoader, is_pad=False):
         super().__init__()
         self.train_dataset = train_dataset
+        self.is_pad = is_pad
 
     def __len__(self):
         """
@@ -39,7 +40,8 @@ class ValSetLoader(Dataset):
         CHW
         ONE HOT
         """
-        img = read_rgb_file(self.train_dataset.val_files[idx])
+        img = read_rgb_file(self.train_dataset.val_files[idx])  # 读取图片
+        img = size_transforms(img, self.train_dataset.shape, self.is_pad)  # 规定一下大小
         class_name = self.train_dataset.val_files[idx].parent.stem  # 获取类别名称
         sample = to_tensor_sample({'img': img, 'class': self.train_dataset.data_class[class_name]},
                                   'torch.FloatTensor')

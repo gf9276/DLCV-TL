@@ -76,7 +76,9 @@ def setup_datasets_and_dataloaders(config, data_size=None):
         # torch.manual_seed(seed)
         # torch.cuda.manual_seed_all(seed)
 
-    train_dataset = TrainSetLoader(config.train.path, data_size=data_size)
+    train_dataset = TrainSetLoader(config.train.path, data_size=data_size,
+                                   shape=config.augmentation.image_shape,
+                                   is_pad_probability=config.augmentation.is_pad_probability)
     sampler = None  # 这个是在多GPU上用的，我没搞多GPU
 
     train_loader = DataLoader(train_dataset,
@@ -195,7 +197,7 @@ def evaluation(config, train_dataset, model, criterion, epoch):
     total = 0
 
     batch_size = 128
-    val_dataset = ValSetLoader(train_dataset)
+    val_dataset = ValSetLoader(train_dataset, is_pad=config.datasets.test.is_pad)
     val_loader = DataLoader(val_dataset,
                             batch_size=batch_size,
                             pin_memory=False,

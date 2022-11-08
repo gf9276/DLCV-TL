@@ -9,7 +9,7 @@ from pathlib import Path  # 我觉得这个更好用，呵呵呵
 import torch
 from torch.utils.data import Dataset
 
-from dataset.data_utils import read_rgb_file, to_tensor_sample
+from dataset.data_utils import *
 
 
 def data_split(full_list, ratio, shuffle=False):
@@ -41,11 +41,13 @@ class TrainSetLoader(Dataset):
         Path to the dataset
     """
 
-    def __init__(self, root_dir: str, data_size=50000):
+    def __init__(self, root_dir: str, data_size=50000, shape=(32, 32), is_pad_probability=0):
         super().__init__()
 
         self.dir = Path(root_dir)  # TL_Dataset 的文件夹
         self.limited = data_size  # 限制张数上限，留着可能有用
+        self.shape = shape
+        self.is_pad_probability = is_pad_probability
 
         # 指定类型，并获取数据集文件夹路径
         self.data_class = {'Green Circle': 1, 'Green Left': 3, 'Green Negative': 9, 'Green Right': 7, 'Green Up': 5,
@@ -78,7 +80,9 @@ class TrainSetLoader(Dataset):
         CHW
         ONE HOT
         """
-        img = read_rgb_file(self.train_files[idx])
+        img = read_rgb_file(self.train_files[idx])  # 读取图片
+        is_pad = np.random.rand(1).item() < self.is_pad_probability  # 按照概率决定是否添加pad
+        img = size_transforms(img, self.shape, is_pad)  # gogogo
         class_name = self.train_files[idx].parent.stem  # 获取类别名称
 
         # # one hot 版本

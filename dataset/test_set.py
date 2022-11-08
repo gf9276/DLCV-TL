@@ -9,7 +9,7 @@ from pathlib import Path  # 我觉得这个更好用，呵呵呵
 import torch
 from torch.utils.data import Dataset
 
-from dataset.data_utils import read_rgb_file, to_tensor_sample
+from dataset.data_utils import *
 
 
 class TestSetLoader(Dataset):
@@ -22,11 +22,13 @@ class TestSetLoader(Dataset):
         Path to the dataset
     """
 
-    def __init__(self, root_dir: str, data_size=50000):
+    def __init__(self, root_dir: str, data_size=50000, shape=(32, 32), is_pad=False):
         super().__init__()
 
         self.dir = Path(root_dir) / 'Testset'  # 测试集
         self.limited = data_size  # 限制张数上限，留着可能有用
+        self.shape = shape
+        self.is_pad = is_pad
 
         # 获取所有的文件名字，并升序排列
         tmp_files = []
@@ -53,7 +55,8 @@ class TestSetLoader(Dataset):
         ONE HOT
         """
         # 读取图片，并限制大小
-        img = read_rgb_file(self.files[idx])
+        img = read_rgb_file(self.files[idx])  # 读取图片
+        img = size_transforms(img, self.shape, self.is_pad)  # 直接resize一下大小
         # 转成tensor
         sample = to_tensor_sample({'img': img, 'name': self.files[idx].name}, 'torch.FloatTensor')
 

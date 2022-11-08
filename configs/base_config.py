@@ -44,7 +44,8 @@ cfg.datasets = CN()
 ### DATASETS.AUGMENTATION  这数据集不需要增强，这部分我没写
 ########################################################################################################################
 cfg.datasets.augmentation = CN()
-cfg.datasets.augmentation.image_shape = (32, 32)  # Image shape 其实我没用这个
+cfg.datasets.augmentation.image_shape = (32, 32)  # Image shape，建议设置成32的倍数，其他的我没试过，可能出bug
+cfg.datasets.augmentation.is_pad_probability = 0.25  # resize 的时候使用pad填充的概率
 ########################################################################################################################
 ### DATASETS.TRAIN 训练集
 ########################################################################################################################
@@ -58,6 +59,7 @@ cfg.datasets.train.path = '../TL_Dataset/'  # 训练集路径
 cfg.datasets.test = CN()
 cfg.datasets.test.path = '../TL_Dataset/'
 cfg.datasets.test.save_class_file_name = 'haha.txt'
+cfg.datasets.test.is_pad = False
 ########################################################################################################################
 ### THESE SHOULD NOT BE CHANGED
 ########################################################################################################################

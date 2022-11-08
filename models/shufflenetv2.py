@@ -16,7 +16,7 @@ class ShuffleBlock(nn.Module):
         '''Channel shuffle: [N,C,H,W] -> [N,g,C/g,H,W] -> [N,C/g,g,H,w] -> [N,C,H,W]'''
         N, C, H, W = x.size()
         g = self.groups
-        return x.view(N, g, C//g, H, W).permute(0, 2, 1, 3, 4).reshape(N, C, H, W)
+        return x.view(N, g, C // g, H, W).permute(0, 2, 1, 3, 4).reshape(N, C, H, W)
 
 
 class SplitBlock(nn.Module):
@@ -125,7 +125,8 @@ class ShuffleNetV2(nn.Module):
         out = self.layer2(out)
         out = self.layer3(out)
         out = F.relu(self.bn2(self.conv2(out)))
-        out = F.avg_pool2d(out, 4)
+        # out = F.avg_pool2d(out, 4)
+        out = F.adaptive_avg_pool2d(out, (1, 1))  # 改成自适应
         out = out.view(out.size(0), -1)
         out = self.linear(out)
         return out
@@ -157,6 +158,5 @@ def test():
     x = torch.randn(3, 3, 32, 32)
     y = net(x)
     print(y.shape)
-
 
 # test()
