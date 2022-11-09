@@ -1,5 +1,5 @@
 """
-训练TL数据集
+训练TL数据集，准确率
 """
 import os
 import sys
