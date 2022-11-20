@@ -30,7 +30,7 @@ from utils import *
 def parse_args():
     """Parse arguments for training script"""
     parser = argparse.ArgumentParser(description='TL training script')
-    parser.add_argument('--file', dest='file', help='配置文件相对路径', default='configs/gf_v1.yaml', type=str)
+    parser.add_argument('--file', dest='file', help='配置文件相对路径', default='configs/gf_v4.yaml', type=str)
     args = parser.parse_args()
     assert args.file.endswith(('.ckpt', '.yaml')), 'You need to provide a .ckpt of .yaml file'
     print('Called with args:')
@@ -78,7 +78,8 @@ def setup_datasets_and_dataloaders(config, data_size=None):
 
     train_dataset = TrainSetLoader(config.train.path, data_size=data_size,
                                    shape=config.augmentation.image_shape,
-                                   is_pad_probability=config.augmentation.is_pad_probability)
+                                   is_pad_probability=config.augmentation.is_pad_probability,
+                                   num_class=config.train.num_class)
     sampler = None  # 这个是在多GPU上用的，我没搞多GPU
 
     train_loader = DataLoader(train_dataset,

@@ -53,6 +53,7 @@ cfg.datasets.train = CN()
 cfg.datasets.train.batch_size = 128  # Training batch size
 cfg.datasets.train.num_workers = 8  # Training number of workers
 cfg.datasets.train.path = '../TL_Dataset/'  # 训练集路径
+cfg.datasets.train.num_class = 10  # 训练集路径
 ########################################################################################################################
 ### DATASETS.TEST 测试集
 ########################################################################################################################

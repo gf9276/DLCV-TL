@@ -1,5 +1,5 @@
 arch:
-  epochs: 500  # 搞着玩玩
+  epochs: 200  # 搞着玩玩
 
 model:
   checkpoint_path: 'output/'

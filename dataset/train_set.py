@@ -41,7 +41,7 @@ class TrainSetLoader(Dataset):
         Path to the dataset
     """
 
-    def __init__(self, root_dir: str, data_size=50000, shape=(32, 32), is_pad_probability=0):
+    def __init__(self, root_dir: str, data_size=50000, shape=(32, 32), is_pad_probability=0, num_class=10):
         super().__init__()
 
         self.dir = Path(root_dir)  # TL_Dataset 的文件夹
@@ -52,6 +52,8 @@ class TrainSetLoader(Dataset):
         # 指定类型，并获取数据集文件夹路径
         self.data_class = {'Green Circle': 1, 'Green Left': 3, 'Green Negative': 9, 'Green Right': 7, 'Green Up': 5,
                            'Red Circle': 0, 'Red Left': 2, 'Red Negative': 8, 'Red Right': 6, 'Red Up': 4}
+        if num_class == 9:
+            self.data_class['Green Negative'] = 8
         tmp_dir_list = [path for path in self.dir.iterdir()]  # 文件夹下面一级的所有文件
         self.dir_list = []
         for tmp_dir in tmp_dir_list:

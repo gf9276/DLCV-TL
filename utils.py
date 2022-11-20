@@ -66,5 +66,13 @@ def get_model(model_type: str):
         model = SimpleDLA()
     elif model_type == 'DLA':
         model = DLA()
+    elif model_type == 'DenseNet121_9':
+        model = DenseNet121(9)
+    elif model_type == 'DLA_9':
+        model = DLA(num_classes=9)
+    elif model_type == 'DPN92_9':
+        model = DPN92(num_classes=9)
+    elif model_type == 'SimpleDLA_9':
+        model = SimpleDLA(num_classes=9)
 
     return model

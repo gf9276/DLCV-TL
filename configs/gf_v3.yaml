@@ -1,0 +1,27 @@
+arch:
+  epochs: 500  # 搞着玩玩
+
+model:
+  checkpoint_path: 'output/'
+  scheduler:
+    decay: 0.9 # 降着玩玩
+  optimizer:
+    learning_rate: 0.2
+    min_lr: 0.01  # 最低限制，试了几次，低于0.01结果也不会变了
+  params:
+    type: 'DLA_9'  # 试了几次，这个网络效果最好
+
+datasets:
+  train:
+    batch_size: 128  # 要不是爆显存了
+    num_workers: 16
+    path: '../TL_Dataset/'
+    num_class: 9
+  test:
+    path: '../TL_Dataset/'
+    is_pad: False  # 和is_pad_probability同步，False对应0.0。这里写的有点乱，意思到了就行，反正False比较好
+  augmentation:
+    image_shape: (64,64)  # 感觉 (32, 32) 会丢失较多信息
+    is_pad_probability: 0.0  # resize 使用 pad 填充的概率，要么0.0，要么1.0。resize两种方案，一种直接缩放、一种填充pad。
+
+
